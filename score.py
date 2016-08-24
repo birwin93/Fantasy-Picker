@@ -89,6 +89,20 @@ class PositionScore(object):
 		ret_str = ret_str + "median: {}\n".format(self.median)
 		return ret_str
 
+class Defense(object):
+	def __init__(self, team, aggregate_list):
+		self.team = team
+		self.receiving_yds_allowed = 0
+		self.receiving_tds_allowed = 0
+		self.rushing_yds_allowed = 0
+		self.rushing_tds_allowed = 0
+		for pp in aggregate_list:
+			self.receiving_yds_allowed += pp.receiving_yds
+			self.receiving_tds_allowed += pp.receiving_tds
+			self.rushing_yds_allowed += pp.rushing_yds
+			self.rushing_tds_allowed += pp.rushing_tds			
+	def __str__(self):
+		return "{} rec_yds_allowed: {} rec_tds_allowed: {} rush_yds_allowed: {} rush_tds_allowed: {}".format(self.team, self.receiving_yds_allowed, self.receiving_tds_allowed, self.rushing_yds_allowed, self.rushing_tds_allowed)
 		
 
 class Score(object):
