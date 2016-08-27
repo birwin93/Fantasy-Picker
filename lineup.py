@@ -1,5 +1,5 @@
 class LineupRules(object):
-	def __init__(self, num_qbs, num_rbs, num_wrs, num_tes, num_ds, num_flex, salary_cap):
+	def __init__(self, num_qbs, num_rbs, num_wrs, num_tes, num_ds, num_flex, salary_cap, salary_step_size):
 		self.num_qbs = num_qbs
 		self.num_rbs = num_rbs
 		self.num_wrs = num_wrs
@@ -7,6 +7,7 @@ class LineupRules(object):
 		self.num_ds = num_ds
 		self.num_flex = num_flex
 		self.salary_cap = salary_cap
+		self.salary_step_size = salary_step_size
 		self.positions = { "QB" : num_qbs, "RB" : num_rbs, "WR" : num_wrs, "TE" : num_tes, "D" : num_ds, "FLEX" : num_flex }
 
 class LineupPlayer(object):
