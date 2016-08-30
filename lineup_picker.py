@@ -45,7 +45,7 @@ def choose_lineup(players, rules, min_score):
 		if max_score < lineup.score:
 			max_score = lineup.score
 			max_lineup = lineup
-		print salaries, " ", lineup.salary, " ", lineup.score
+		#print salaries, " ", lineup.salary, " ", lineup.score
 	return max_lineup
 
 def update_lineup(all_lineups, lineup, rules):
@@ -97,24 +97,26 @@ def isint(value):
 # players = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24]
 # players = players * 80
 
-players = []
-file = open("datasets/2015_12_data.txt")
-for line in file.readlines():
-	data = line.split(";")
-	if isint(data[9]):
-		players.append(LineupPlayer(data[3], format_position(data[4]), float(data[8]), int(data[9])))
-for player in players:
-	print player.player_id
+def lineup_from_file(filename, rules):
+	players = []
+	file = open(filename)
+	for line in file.readlines():
+		data = line.split(";")
+		if isint(data[9]):
+			players.append(LineupPlayer(data[3], format_position(data[4]), float(data[8]), int(data[9])))
+	timer = Timer()
+	timer.start("Total")
+	lineup = choose_lineup(players, rules, 0)
+	timer.end("Total")
+	print "Done\n\n"
+	timer.print_times()
+	print "\n\n"
+	print lineup.players
+	print lineup.salary
+	print lineup.score
 
-rules = LineupRules(1, 2, 3, 1, 1, 1, 50000, 100)
-
-timer = Timer()
-timer.start("Total")
-lineup = choose_lineup(players, rules, 0)
-timer.end("Total")
-print "Done\n\n"
-timer.print_times()
-print "\n\n"
-print lineup.players
-print lineup.salary
-print lineup.score
+rules = LineupRules(1, 2, 3, 1, 1, 1, 35000, 100)
+lineup_from_file("datasets/1_2015.txt", rules)
+lineup_from_file("datasets/2_2015.txt", rules)
+lineup_from_file("datasets/3_2015.txt", rules)
+lineup_from_file("datasets/4_2015.txt", rules)
