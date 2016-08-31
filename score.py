@@ -70,21 +70,27 @@ DRAFT_KINGS_BONUS = {
     },
 }
 
-class PositionScore(object):
-	def __init__(self, position, scores, sort=False, top=None):
+class PositionPlayer(object):
+    def __init__(self, position, player, score):
+	self.position = position
+	self.player = player
+	self.score = score
+
+class PositionPlayers(object):
+	def __init__(self, position, players, sort=False, top=None):
 		if sort:
-			scores.sort(key=lambda tup: tup[1], reverse=True)
+			players.sort(key=lambda player: player.score, reverse=True)
 		if top:
-			scores = scores[:top]
+			players = players[:top]
 		self.position = position
-		self.scores = scores
+		self.players = players
 		self.median = scores[len(scores)/2][1]
 		self.mean = sum(s for p,s in scores) / len(scores)
 	
 	def __str__(self):
 		ret_str = ""
-		for p, s in self.scores:
-			ret_str = ret_str + "{} {}\n".format(p, s)
+		for player in self.players:
+			ret_str = ret_str + "{} {}\n".format(player.player, player.score)
 		ret_str = ret_str + "mean: {}\n".format(self.mean)
 		ret_str = ret_str + "median: {}\n".format(self.median)
 		return ret_str

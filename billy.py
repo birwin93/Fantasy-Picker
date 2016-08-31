@@ -2,13 +2,6 @@ import nfldb
 import score
 import time
 
-def get_game_query(years, weeks):
-	db = nfldb.connect()
-	q = nfldb.Query(db).game(season_year=years, season_type="Regular")
-	if weeks:
-		q.game(week=weeks)
-	return q
-
 def get_team_scores(years, weeks=None, top=None):
 	q = get_game_query(years, weeks)
 	scorer = score.Score(score.DRAFT_KINGS_SCORING, score.DRAFT_KINGS_BONUS)
@@ -28,25 +21,6 @@ def get_team_scores(years, weeks=None, top=None):
 	for k in scores:
 		scores_arr.append((k, scores[k]))
 	return score.PositionScore("D", scores_arr, False, top)
-
-def get_defense_team_stats(years, weeks=None):
-	q = get_game_query(years, weeks)
-	defenses = {}
-	for game in q.as_games():
-		if game.home_team not in defenses:
-			defenses[game.home_team] = []
-		if game.away_team not in defenses:
-			defenses[game.away_team] = []
-		for pp in game.play_players:
-			if pp.team == game.home_team:
-				defenses[game.away_team].append(pp)
-			else:
-				defenses[game.home_team].append(pp)
-	defenses_arr = []
-	for k in defenses:
-		defenses_arr.append(score.Defense(k, defenses[k]))
-	return defenses_arr
-
 
 def sort_for_position(position):
 	if position == "QB":
