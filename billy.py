@@ -2,45 +2,50 @@ import nfldb
 from score import Scorer
 from timer import Timer
 
-def get_all_player_data(years, weeks=None):
+def get_all_offensive_player_data(years, weeks=None):
 	db = nfldb.connect()
 	q = nfldb.Query(db).game(season_year=years, season_type="Regular")
 	if weeks:
 		q.game(week=weeks)
 
+	all_player_data = {}
 	all_players = {}
-
 	for game in q.as_games():
-
-		# need to track all stats against defenese to get defensive scores
-		game_players = { game.home_team : [], game.away_team : [] }
 
 		# go through each play_player in the game
 		for pp in game.play_players:
 
 			# record play for player
-			if pp.gsis_id in game_players:
-				game_players[pp.gsis_id].append(pp)
+			if pp.player in game_players:
+				game_players[pp.player].append(pp)
 			else:
-				game_players[pp.gsis_id] = [pp]
+				game_players[pp.player] = [pp]
 
 			# record play against defense
-			if pp.team in game_players:
-				if pp.team == game.home_team:
-					game_players[game.away_team].append(pp)
-				else:
-					game_players[game.home_team].append(pp)
+			#if pp.team in game_players:
+			#	if pp.team == game.home_team:
+			#		game_players[game.away_team].append(pp)
+			#	else:
+			#		game_players[game.home_team].append(pp)
 
 		# now add game stats to each players overall stats
-		for k in game_players:
-			plays = game_players[k]
-			if k in all_players:
-				all_players[k].append(plays)
+		for player in game_players:
+			plays = game_players[player]
+			if player in all_player_data:
+				all_player_data[player].append(plays)
 			else:
-				all_players[k] = [plays]
-	return all_players
+				all_player_data[player] = [plays]
+	return all_player_data
 
-
+def process_all_offensive_player_data(players):
+	scorer = Scorer.draft_kings()
+	process_players = []
+	for player in player:
+		all_game_data = player[player]
+		scores = []
+		for game_data in all_game_data:
+			scores.append(scorer.get_offensive_score(game_data))
+		
 
 # def sort_for_position(position):
 # 	if position == "QB":
@@ -86,6 +91,6 @@ def get_all_player_data(years, weeks=None):
 # for d in defenses:
 # 	print d
 
-res = get_all_player_data(2015, 1)
+all_players, all_player_data = get_all_player_data(2015, 1)
 for k in res:
-	print k, res[k]
+	print k
