@@ -10,13 +10,21 @@ class LineupRules(object):
 		self.salary_step_size = salary_step_size
 		self.positions = { "QB" : num_qbs, "RB" : num_rbs, "WR" : num_wrs, "TE" : num_tes, "D" : num_ds, "FLEX" : num_flex }
 
+	@classmethod
+	def draft_kings(cls):
+		return LineupRules(1, 2, 3, 1, 1, 1, 50000, 100)
+
 class LineupPlayer(object):
-	def __init__(self, player_name, position, score, salary):
+	def __init__(self, player_name, position, opponent):
 		self.player_name = player_name
 		self.position = position
 		self.score = score
 		self.salary = salary
-		self.player_id = "{}-{}-{}-{}".format(self.player_name, self.position, self.score, self.salary)
+		self.scores = []
+		self.project_score = 0
+		self.salary = 0
+		self.opponent = opponent
+		self.player_id = "{}-{}-{}-{}".format(self.player_name, self.position, self.project_score, self.salary)
 
 	def is_flex(self):
 		return self.position == "RB" or self.position == "WR" or self.position == "TE"

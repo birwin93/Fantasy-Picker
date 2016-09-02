@@ -65,38 +65,6 @@ def isint(value):
   except:
     return False
 
-# p1 = LineupPlayer("Billy", "QB", 10, 1)
-# p2 = LineupPlayer("Ben", "QB", 20, 2)
-# p3 = LineupPlayer("Bryan", "QB", 40, 4)
-# p4 = LineupPlayer("Biff", "QB", 10, 2)
-#
-# p5 = LineupPlayer("Jeff", "RB", 25, 2)
-# p6 = LineupPlayer("Peter", "RB", 20, 1)
-# p7 = LineupPlayer("Craig", "RB", 10, 1)
-# p8 = LineupPlayer("Hype", "RB", 15, 1)
-# p9 = LineupPlayer("Poop", "RB", 5, 1)
-# p10 = LineupPlayer("Max", "RB", 40, 3)
-#
-# p11 = LineupPlayer("Evan", "WR", 40, 3)
-# p12 = LineupPlayer("Matt", "WR", 21, 2)
-# p13 = LineupPlayer("Chris", "WR", 30, 1)
-# p14 = LineupPlayer("Ted", "WR", 30, 1)
-# p15 = LineupPlayer("Tommy", "WR", 20, 1)
-# p16 = LineupPlayer("Frank", "WR", 40, 2)
-#
-# p17 = LineupPlayer("Tyler", "TE", 20, 1)
-# p18 = LineupPlayer("Kyle", "TE", 40, 3)
-# p19 = LineupPlayer("Joe", "TE", 50, 4)
-# p20 = LineupPlayer("Jimmy", "TE", 10, 1)
-#
-# p21 = LineupPlayer("Mike", "D", 25, 2)
-# p22 = LineupPlayer("Nick", "D", 25, 1)
-# p23 = LineupPlayer("Lola", "D", 10, 1)
-# p24 = LineupPlayer("Luke", "D", 20, 1)
-#
-# players = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24]
-# players = players * 80
-
 def lineup_from_file(filename, rules):
 	players = []
 	file = open(filename)
@@ -115,7 +83,7 @@ def lineup_from_file(filename, rules):
 	print lineup.salary
 	print lineup.score
 
-rules = LineupRules(1, 2, 3, 1, 1, 1, 35000, 100)
+rules = LineupRules(1, 2, 3, 1, 1, 1, 50000, 100)
 lineup_from_file("datasets/1_2015.txt", rules)
 lineup_from_file("datasets/2_2015.txt", rules)
 lineup_from_file("datasets/3_2015.txt", rules)

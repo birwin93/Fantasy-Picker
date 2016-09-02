@@ -1,4 +1,3 @@
-
 DRAFT_KINGS_SCORING = {
     "offense": {
         "fumbles_lost": -1,
@@ -12,7 +11,7 @@ DRAFT_KINGS_SCORING = {
         "puntret_tds": 6,
         "receiving_rec": 1,
         "receiving_tds": 6,
-        "receiving_twoptm": 2, 
+        "receiving_twoptm": 2,
         "receiving_yds": 0.1,
         "rushing_tds": 6,
         "rushing_twoptm": 2,
@@ -70,11 +69,15 @@ DRAFT_KINGS_BONUS = {
     },
 }
 
-class PositionPlayer(object):
-    def __init__(self, position, player, score):
-	self.position = position
-	self.player = player
-	self.score = score
+class GameStats(object):
+    def __init__(self, plays):
+        self.stats = {}
+        for play in plays:
+            for k in play.fields:
+                self.stats[k] = self.stats.get(k, 0) + play[k]
+    def __str__(self):
+        print self.stats
+
 
 class PositionPlayers(object):
 	def __init__(self, position, players, sort=False, top=None):
@@ -86,7 +89,7 @@ class PositionPlayers(object):
 		self.players = players
 		self.median = scores[len(scores)/2][1]
 		self.mean = sum(s for p,s in scores) / len(scores)
-	
+
 	def __str__(self):
 		ret_str = ""
 		for player in self.players:
@@ -106,12 +109,12 @@ class Defense(object):
 			self.receiving_yds_allowed += pp.receiving_yds
 			self.receiving_tds_allowed += pp.receiving_tds
 			self.rushing_yds_allowed += pp.rushing_yds
-			self.rushing_tds_allowed += pp.rushing_tds			
+			self.rushing_tds_allowed += pp.rushing_tds
 	def __str__(self):
 		return "{} rec_yds_allowed: {} rec_tds_allowed: {} rush_yds_allowed: {} rush_tds_allowed: {}".format(self.team, self.receiving_yds_allowed, self.receiving_tds_allowed, self.rushing_yds_allowed, self.rushing_tds_allowed)
-		
 
-class Score(object):
+
+class Scorer(object):
     TYPE_OFFENSE = "offense"
     TYPE_DEFENSE = "defense"
 
@@ -119,9 +122,13 @@ class Score(object):
         self.scoring = scoring
         self.bonus = bonus
 
+    @classmethod
+    def draft_kings(cls):
+        return Scorer(DRAFT_KINGS_SCORING, DRAFT_KINGS_BONUS)
+
     def get_offense_score(self, aggregate):
         return self.get_offense_score([aggregate])
-    
+
     def get_offense_score(self, aggregate_list):
         score = 0
         score_type = self.TYPE_OFFENSE
@@ -163,7 +170,3 @@ class Score(object):
         elif score_type == self.TYPE_DEFENSE:
             return self.bonus["defense_bonus_points"]
         return 0
-
-
-
-
