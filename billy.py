@@ -2,32 +2,29 @@ import nfldb
 from score import Scorer
 from timer import Timer
 
+class PotentialPlayer(object)
+	def __init__(self, player, scores):
+		self.player_id = player.player_id
+		self.name = player.name
+		self.position = player.position
+		self.scores = scores
+		self.total_score = sum(scores)
+
 def get_all_offensive_player_data(years, weeks=None):
 	db = nfldb.connect()
 	q = nfldb.Query(db).game(season_year=years, season_type="Regular")
 	if weeks:
 		q.game(week=weeks)
-
 	all_player_data = {}
-	all_players = {}
 	for game in q.as_games():
-
+		game_players = {}
 		# go through each play_player in the game
 		for pp in game.play_players:
-
 			# record play for player
 			if pp.player in game_players:
 				game_players[pp.player].append(pp)
 			else:
 				game_players[pp.player] = [pp]
-
-			# record play against defense
-			#if pp.team in game_players:
-			#	if pp.team == game.home_team:
-			#		game_players[game.away_team].append(pp)
-			#	else:
-			#		game_players[game.home_team].append(pp)
-
 		# now add game stats to each players overall stats
 		for player in game_players:
 			plays = game_players[player]
@@ -39,13 +36,15 @@ def get_all_offensive_player_data(years, weeks=None):
 
 def process_all_offensive_player_data(players):
 	scorer = Scorer.draft_kings()
-	process_players = []
+	processed_players = []
 	for player in player:
 		all_game_data = player[player]
 		scores = []
 		for game_data in all_game_data:
 			scores.append(scorer.get_offensive_score(game_data))
-		
+		processed_players.append(PotentialPlayer(player, scores))
+	return processed_players
+
 
 # def sort_for_position(position):
 # 	if position == "QB":
@@ -91,6 +90,8 @@ def process_all_offensive_player_data(players):
 # for d in defenses:
 # 	print d
 
-all_players, all_player_data = get_all_player_data(2015, 1)
-for k in res:
-	print k
+all_player_data = get_all_player_data(2015, 1)
+players = process_all_offensive_player_data(all_player_data)
+players.sort(key=lambda player: player.total_score, reverse=True)
+for p in players[:50]
+	print p.name, p.total_score
