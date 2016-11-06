@@ -1,3 +1,5 @@
+from models import LineupPlayer
+
 class LineupRules(object):
 	def __init__(self, num_qbs, num_rbs, num_wrs, num_tes, num_ds, num_flex, salary_cap, salary_step_size):
 		self.num_qbs = num_qbs
@@ -8,29 +10,11 @@ class LineupRules(object):
 		self.num_flex = num_flex
 		self.salary_cap = salary_cap
 		self.salary_step_size = salary_step_size
-		self.positions = { "QB" : num_qbs, "RB" : num_rbs, "WR" : num_wrs, "TE" : num_tes, "D" : num_ds, "FLEX" : num_flex }
+		self.positions = { "QB" : num_qbs, "RB" : num_rbs, "WR" : num_wrs, "TE" : num_tes, "DEF" : num_ds, "FLEX" : num_flex }
 
 	@classmethod
 	def draft_kings(cls):
 		return LineupRules(1, 2, 3, 1, 1, 1, 50000, 100)
-
-class LineupPlayer(object):
-	def __init__(self, player_name, position, opponent):
-		self.player_name = player_name
-		self.position = position
-		self.score = score
-		self.salary = salary
-		self.scores = []
-		self.project_score = 0
-		self.salary = 0
-		self.opponent = opponent
-		self.player_id = "{}-{}-{}-{}".format(self.player_name, self.position, self.project_score, self.salary)
-
-	def is_flex(self):
-		return self.position == "RB" or self.position == "WR" or self.position == "TE"
-
-	def __str__(self):
-		return self.player_id
 
 class Lineup(object):
 	def __init__(self, rules):
@@ -42,7 +26,7 @@ class Lineup(object):
 		self.salary = 0
 		self.score = 0
 		self.rules = rules
-		self.players = { "QB" : self.qbs, "RB" : self.rbs, "WR" : self.wrs, "TE" : self.tes, "D" : self.ds }
+		self.players = { "QB" : self.qbs, "RB" : self.rbs, "WR" : self.wrs, "TE" : self.tes, "DEF" : self.ds }
 
 	def add_player(self, player):
 		if self.is_new_player(player):

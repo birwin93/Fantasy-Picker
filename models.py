@@ -33,15 +33,15 @@ class GameScore(object):
 
 class Position(object):
     def __init__(self, position, players):
-        players.sort(key=lambda player: player.score, reverse=True)
+        players.sort(key=lambda player: player.total_score, reverse=True)
         self.position = position
         self.players = players
 
-    def mean(top=None):
+    def mean(self, top=None):
         players = self.top_players(top)
-        return sum(p.top_score for p in players) / len(players)
+        return sum(p.total_score for p in players) / len(players)
 
-    def median(top=None):
+    def median(self, top=None):
         players = self.top_players(top)
         return players[len(players)/2].total_score
 

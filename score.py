@@ -69,51 +69,6 @@ DRAFT_KINGS_BONUS = {
     },
 }
 
-class GameStats(object):
-    def __init__(self, plays):
-        self.stats = {}
-        for play in plays:
-            for k in play.fields:
-                self.stats[k] = self.stats.get(k, 0) + play[k]
-    def __str__(self):
-        print self.stats
-
-
-class PositionPlayers(object):
-	def __init__(self, position, players, sort=False, top=None):
-		if sort:
-			players.sort(key=lambda player: player.score, reverse=True)
-		if top:
-			players = players[:top]
-		self.position = position
-		self.players = players
-		self.median = scores[len(scores)/2][1]
-		self.mean = sum(s for p,s in scores) / len(scores)
-
-	def __str__(self):
-		ret_str = ""
-		for player in self.players:
-			ret_str = ret_str + "{} {}\n".format(player.player, player.score)
-		ret_str = ret_str + "mean: {}\n".format(self.mean)
-		ret_str = ret_str + "median: {}\n".format(self.median)
-		return ret_str
-
-class Defense(object):
-	def __init__(self, team, aggregate_list):
-		self.team = team
-		self.receiving_yds_allowed = 0
-		self.receiving_tds_allowed = 0
-		self.rushing_yds_allowed = 0
-		self.rushing_tds_allowed = 0
-		for pp in aggregate_list:
-			self.receiving_yds_allowed += pp.receiving_yds
-			self.receiving_tds_allowed += pp.receiving_tds
-			self.rushing_yds_allowed += pp.rushing_yds
-			self.rushing_tds_allowed += pp.rushing_tds
-	def __str__(self):
-		return "{} rec_yds_allowed: {} rec_tds_allowed: {} rush_yds_allowed: {} rush_tds_allowed: {}".format(self.team, self.receiving_yds_allowed, self.receiving_tds_allowed, self.rushing_yds_allowed, self.rushing_tds_allowed)
-
-
 class Scorer(object):
     TYPE_OFFENSE = "offense"
     TYPE_DEFENSE = "defense"
